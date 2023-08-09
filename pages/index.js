@@ -5,7 +5,6 @@ import {
   getStoryblokApi,
   StoryblokComponent,
 } from "@storyblok/react";
-import SubscribeNewsletter from "../components/SubscribeNewsletter";
 
 export default function Home({ story }) {
   story = useStoryblokState(story, {
@@ -25,8 +24,6 @@ export default function Home({ story }) {
 
       <main className="w-full">
         <StoryblokComponent blok={story.content} />
-
-        <SubscribeNewsletter />
       </main>
     </div>
   );
