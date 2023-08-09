@@ -1,19 +1,24 @@
 import React, { useState } from "react";
 
 function SubscribeNewsletter() {
-  const [email, setEmail] = useState("");
+  const [formData, setformData] = useState({ email: "" });
 
   const handleSubscribe = async (evt) => {
     evt.preventDefault();
-    const res = await fetch("/api/subscribe", {
+    const res = await fetch("/api/signup", {
       method: "POST",
-      body: JSON.stringify({ email }),
+      body: JSON.stringify(formData),
       "Content-Type": "application/json",
     });
-    const data = await res.json();
+    const payload = await res.json();
+    const { data } = payload;
 
-    if (data.success) {
-      alert("Successfully subscribed to newsletter!");
+    if (payload.success) {
+      if (data.newSubscription) {
+        alert(payload.message);
+      } else {
+        alert(payload.message);
+      }
     } else {
       alert("Failed to subscribe to newsletter");
     }
@@ -33,7 +38,12 @@ function SubscribeNewsletter() {
           type="email"
           placeholder="Your email"
           required
-          onChange={(evt) => setEmail(evt.target.value)}
+          onChange={(evt) =>
+            setformData((formData) => ({
+              ...formData,
+              email: evt.target.value,
+            }))
+          }
           className="border w-3/4 p-2 focus-within:outline-blue-200"
         />
         <button

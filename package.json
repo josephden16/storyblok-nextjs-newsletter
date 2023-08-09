@@ -1,7 +1,7 @@
 {
-  "name": "react-next-storyblok-boilerplate",
+  "name": "storyblok-newsletter",
   "version": "1.0.0",
-  "description": "Next.js Storyblok Boilerplate",
+  "description": "Next.js + Storyblok Newsletter Demo",
   "main": "index.js",
   "private": true,
   "scripts": {
@@ -12,9 +12,12 @@
   "dependencies": {
     "@storyblok/react": "^1.0.3",
     "axios": "^1.4.0",
+    "dotenv": "^16.3.1",
+    "mailgun.js": "^9.2.0",
     "next": "^12.1.0",
     "react": "17.0.2",
     "react-dom": "17.0.2",
+    "storyblok-js-client": "^5.12.1",
     "storyblok-rich-text-react-renderer": "^2.9.0"
   },
   "devDependencies": {
