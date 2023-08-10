@@ -11,14 +11,9 @@ function SubscribeNewsletter() {
       "Content-Type": "application/json",
     });
     const payload = await res.json();
-    const { data } = payload;
 
     if (payload.success) {
-      if (data.newSubscription) {
-        alert(payload.message);
-      } else {
-        alert(payload.message);
-      }
+      alert(payload.message);
     } else {
       alert("Failed to subscribe to newsletter");
     }
