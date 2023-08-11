@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 
 function SubscribeNewsletter() {
-  const [formData, setformData] = useState({ email: "" });
+  const [email, setEmail] = useState("");
 
   const handleSubscribe = async (evt) => {
     evt.preventDefault();
     const res = await fetch("/api/signup", {
       method: "POST",
-      body: JSON.stringify(formData),
+      body: JSON.stringify({ email }),
       "Content-Type": "application/json",
     });
     const payload = await res.json();
@@ -33,12 +33,7 @@ function SubscribeNewsletter() {
           type="email"
           placeholder="Your email"
           required
-          onChange={(evt) =>
-            setformData((formData) => ({
-              ...formData,
-              email: evt.target.value,
-            }))
-          }
+          onChange={(evt) => setEmail(evt.target.value)}
           className="border w-3/4 p-2 focus-within:outline-blue-200"
         />
         <button
