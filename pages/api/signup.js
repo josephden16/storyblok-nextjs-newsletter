@@ -31,7 +31,6 @@ export default async function signupHandler(req, res) {
         return res.status(200).json({
           success: true,
           message: "You've already subscribed to the newsletter",
-          data: { newSubscription: false },
         });
       } else {
         const { confirmationCode } = vars;
@@ -41,7 +40,6 @@ export default async function signupHandler(req, res) {
         return res.status(200).json({
           success: true,
           message: "Go to your mailbox to confirm your newsletter subscription",
-          data: { newSubscription: false },
         });
       }
     } else {
@@ -53,7 +51,6 @@ export default async function signupHandler(req, res) {
       return res.status(200).json({
         success: true,
         message: "Go to your mailbox to confirm your newsletter subscription",
-        data: { newSubscription: true },
       });
     }
   } catch (error) {
@@ -64,9 +61,3 @@ export default async function signupHandler(req, res) {
     });
   }
 }
-
-export const config = {
-  api: {
-    bodyParser: true,
-  },
-};
