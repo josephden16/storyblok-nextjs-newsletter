@@ -125,8 +125,8 @@ export async function removeFromSubscribersList(
 export async function sendNewsletterMail({ subject, post }) {
   try {
     const data = await mg.messages.create(process.env.MAILGUN_SENDER_DOMAIN, {
-      from: "newsletter@tegathedev.xyz",
-      to: ["newsletter@tegathedev.xyz"],
+      from: process.env.MAILGUN_SENDER_EMAIL,
+      to: [process.env.MAILGUN_SENDER_EMAIL],
       subject: subject,
       template: "newsletter",
       "h:X-Mailgun-Variables": JSON.stringify({

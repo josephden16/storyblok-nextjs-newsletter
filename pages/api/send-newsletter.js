@@ -2,7 +2,7 @@ import StoryblokClient from "storyblok-js-client";
 import { getHostURL, sendNewsletterMail } from "../../helpers";
 
 const Storyblok = new StoryblokClient({
-  accessToken: process.env.NEXT_PUBLIC_STORYBLOK_ACCESS_TOKEN,
+  oauthToken: process.env.STORYBLOK_MANAGEMENT_TOKEN,
 });
 
 export default async function sendNewsletter(req, res) {
@@ -11,21 +11,29 @@ export default async function sendNewsletter(req, res) {
   }
 
   try {
-    const { full_slug } = req.body;
+    const { full_slug, space_id, story_id } = req.body;
 
-    // Ignore stories that aren't blog posts
-    if (!full_slug.startsWith("blog/")) {
+    const response = await Storyblok.get(
+      `spaces/${space_id}/stories/${story_id}`
+    );
+    const { content } = response.data.story;
+    const {
+      title,
+      teaser,
+      image,
+      sendNewsletter,
+      newsletterSentAt,
+      component,
+    } = content;
+
+    if (component !== "article") {
       return res
         .status(400)
         .json({ message: "Only blog posts are applicable for newsletters" });
     }
 
-    const response = await Storyblok.get(`cdn/stories/${full_slug}`);
-    const { content } = response.data.story;
-    const { title, teaser, image, shouldSendNewsletter } = content;
-    const link = getHostURL() + "/" + full_slug;
-
-    if (!shouldSendNewsletter) {
+    if (!sendNewsletter || newsletterSentAt) {
+      console.log("Not applicable for newsletter");
       return res.status(400).json({ message: "Not applicable for newsletter" });
     }
 
@@ -34,13 +42,17 @@ export default async function sendNewsletter(req, res) {
       post: {
         title: title,
         teaser: teaser,
-        link: link,
+        link: getHostURL() + "/" + full_slug,
         image: image.filename,
       },
     };
 
+    const existingStory = response.data.story;
+    existingStory.content.newsletterSentAt = new Date();
+    await Storyblok.put(`spaces/${space_id}/stories/${story_id}`, {
+      story: existingStory,
+    });
     await sendNewsletterMail(newsletterData);
-
     console.log("Newsletter Sent!");
     res.status(201).json({ message: "Newsletter Sent" });
   } catch (error) {

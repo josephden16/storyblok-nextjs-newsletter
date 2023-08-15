@@ -1,6 +1,6 @@
 import { removeFromSubscribersList } from "../helpers";
 
-export default function ConfirmSubscription({ unsubscribed, message }) {
+export default function Unsubscribe({ unsubscribed, message }) {
   return (
     <div className="text-center mt-10">
       {unsubscribed ? (
